@@ -119,13 +119,11 @@ web apps without installing anything on your computer.
 Go to [https://replit.com](https://replit.com) and sign up for a free account.
 
 #### 2. Create a new Repl
-- Click the **"+ Create Repl"** button (top left)
-- Choose **"Import from GitHub"** if your project is on GitHub, OR
-- Choose **"Python"** as the template to start a blank Python Repl
+- Click the **"Import code or design"** button (top left)
+- Choose **"GitHub"** if your project is on GitHub
 
 #### 3. Upload your project files
-If you chose a blank Python Repl:
-- In the left sidebar, click the **Files** icon (looks like a folder)
+- Paste the github repo URL
 - Upload all the project files:
   - `main.py`
   - `config.py`
