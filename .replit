@@ -1,0 +1,20 @@
+# .replit — Replit configuration file
+#
+# This file tells Replit how to run the StudyBuddy app.
+# You don't need to change anything here.
+#
+# When you click the green "Run" button in Replit, it executes
+# the command below.
+
+run = "python main.py"
+language = "python3"
+
+[nix]
+# Specifies the Nix package channel (Replit's dependency system).
+# This gives us a stable Python environment.
+channel = "stable-22_11"
+
+[deployment]
+# Used if you deploy to a Replit subdomain ("Deploy" button).
+run = ["sh", "-c", "python main.py"]
+deploymentTarget = "cloudrun"

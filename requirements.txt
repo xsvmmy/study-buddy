@@ -1,0 +1,10 @@
+# requirements.txt — Python packages needed to run StudyBuddy
+#
+# Install all of these at once by running:
+#   pip install -r requirements.txt
+#
+# On Replit, these are installed automatically when you click Run.
+
+flask>=3.0        # Web framework — handles routes, requests, sessions
+openai>=1.0       # Official OpenAI Python library — connects to the AI API
+pypdf>=4.0        # Reads text from PDF files (replaces the older PyPDF2)
