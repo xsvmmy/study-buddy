@@ -8,3 +8,10 @@
 flask>=3.0        # Web framework — handles routes, requests, sessions
 openai>=1.0       # Official OpenAI Python library — connects to the AI API
 pypdf>=4.0        # Reads text from PDF files (replaces the older PyPDF2)
+Pillow>=10.0      # Image processing — opens uploaded image files for OCR
+pytesseract>=0.3  # OCR: extracts text from images using the Tesseract engine
+                  #
+                  # pytesseract also requires the Tesseract binary to be installed:
+                  #   macOS:          brew install tesseract
+                  #   Ubuntu/Replit:  apt-get install tesseract-ocr
+                  #   Windows:        https://github.com/UB-Mannheim/tesseract/wiki
