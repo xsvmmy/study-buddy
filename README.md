@@ -124,20 +124,15 @@ Go to [https://replit.com](https://replit.com) and sign up for a free account.
 
 #### 3. Upload your project files
 - Paste the github repo URL
-- Upload all the project files:
-  - `main.py`
-  - `config.py`
-  - `requirements.txt`
-  - `.replit`
-- Create the `templates` folder and upload `templates/index.html` inside it
+- Ensure all project files are uploaded
 
 #### 4. Add your API key using Replit Secrets
+In config.py, enter your API key for OPENAI_API_KEY variable...
+
 Replit Secrets are a secure way to store API keys — they're hidden from anyone
 who views your code.
 
-- In the left sidebar, click the **"Secrets"** icon (looks like a lock 🔒)
-  - It may also be under the **Tools** menu
-- Click **"+ New Secret"**
+- When prompted, opt to turn your API key into a Replit Secret
 - Set **Key** to: `OPENAI_API_KEY`
 - Set **Value** to: your actual API key (e.g., `sk-abc123...`)
 - Click **"Add Secret"**
@@ -164,6 +159,8 @@ Replit will:
 3. Open a **Webview** panel showing your app
 
 #### 7. Use the app
+Publish your new deployable app!
+- Press "Publish" and wait for Replit to work it's magic 🪄
 The Webview shows the app running at a URL like:
 ```
 https://studybuddy.your-username.repl.co
