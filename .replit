@@ -8,6 +8,7 @@
 
 run = "python main.py"
 language = "python3"
+modules = ["python-3.11"]
 
 [nix]
 # Specifies the Nix package channel (Replit's dependency system).
@@ -18,3 +19,30 @@ channel = "stable-22_11"
 # Used if you deploy to a Replit subdomain ("Deploy" button).
 run = ["sh", "-c", "python main.py"]
 deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[agent]
+expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "StudyBuddy"
+
+[[workflows.workflow]]
+name = "StudyBuddy"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"
