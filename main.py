@@ -27,9 +27,6 @@ import os
 import io
 import uuid
 
-# File extensions we accept for image OCR
-IMAGE_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp'}
-
 # --- Load settings from config.py ---
 # We try config.py first. If the key is the default placeholder
 # or config.py is missing, we fall back to an environment variable.
@@ -133,30 +130,6 @@ def extract_text(file):
         except Exception as e:
             return f"Error reading PDF: {str(e)}"
 
-    # --- Image files (OCR via pytesseract + Pillow) ---
-    elif filename.endswith(tuple(IMAGE_EXTENSIONS)):
-        try:
-            from PIL import Image
-            import pytesseract
-            # Open the image from the uploaded bytes
-            img = Image.open(io.BytesIO(file.read()))
-            # Convert to RGB so Tesseract can handle all formats (RGBA, palette, etc.)
-            if img.mode not in ('RGB', 'L'):
-                img = img.convert('RGB')
-            # Run OCR — returns a string of all detected text
-            text = pytesseract.image_to_string(img)
-            # If Tesseract found nothing, return a note so the AI still knows an image was uploaded
-            return text.strip() if text.strip() else "[No readable text detected in this image]"
-        except ImportError:
-            return (
-                "Error: Image OCR requires Pillow and pytesseract.\n"
-                "Run: pip install Pillow pytesseract\n"
-                "Then install the Tesseract binary (brew install tesseract on macOS, "
-                "or apt-get install tesseract-ocr on Ubuntu/Replit)."
-            )
-        except Exception as e:
-            return f"Error reading image: {str(e)}"
-
     # --- Unsupported type ---
     else:
         return None
@@ -203,10 +176,9 @@ def upload():
 
     # Check the file extension before processing
     ext = os.path.splitext(file.filename)[1].lower()
-    allowed = {'.pdf', '.txt'} | IMAGE_EXTENSIONS
-    if ext not in allowed:
+    if ext not in {'.pdf', '.txt'}:
         return jsonify({
-            'error': f'Unsupported file type "{ext}". Please upload a PDF, TXT, or image file (PNG, JPG, etc.).'
+            'error': f'Unsupported file type "{ext}". Please upload a PDF or TXT file.'
         }), 400
 
     # Extract text from the file
@@ -216,9 +188,9 @@ def upload():
         return jsonify({'error': 'Could not read this file type. Use PDF or TXT.'}), 400
 
     if not text.strip():
-        is_image = ext in IMAGE_EXTENSIONS
-        hint = 'Try a clearer photo.' if is_image else 'PDFs must contain real text (not scanned images).'
-        return jsonify({'error': f'No readable text found. {hint}'}), 400
+        return jsonify({
+            'error': 'No readable text found. PDFs must contain real text (not scanned images).'
+        }), 400
 
     # Truncate to MAX_DOC_CHARS to stay within OpenAI token limits
     truncated_text = text[:MAX_DOC_CHARS]
@@ -270,10 +242,7 @@ def chat():
         # Combine all uploaded document text into one context block
         doc_sections = []
         for doc in data['documents']:
-            doc_ext = os.path.splitext(doc['name'])[1].lower()
-            # Label image files so the AI knows this text came from OCR
-            label = ' (OCR-extracted text from image)' if doc_ext in IMAGE_EXTENSIONS else ''
-            doc_sections.append(f"=== {doc['name']}{label} ===\n{doc['text']}")
+            doc_sections.append(f"=== {doc['name']} ===\n{doc['text']}")
         doc_context = "\n\n".join(doc_sections)
 
         system_prompt = f"""You are StudyBuddy, a friendly and helpful AI study assistant.
@@ -377,4 +346,4 @@ if __name__ == '__main__':
 
     # host="0.0.0.0" makes the server accessible on your local network
     # debug=True gives helpful error messages during development
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=False)
